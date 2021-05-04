@@ -51,14 +51,14 @@ export default class EventLoop {
     window.requestAnimationFrame(drawStep);
   }
 
-  goToPosition(position) {
+  goToPosition(position, reverse = false) {
     this.infinity = false;
 
     if (position === GO_TO_TYPES.infinity) {
       return this.goToInfinity()
     }
 
-    return this.goTo(GO_TO_TYPES_TO_DEGREES[position]);
+    return this.goTo(GO_TO_TYPES_TO_DEGREES[position], reverse);
   }
 
   goToInfinity() {

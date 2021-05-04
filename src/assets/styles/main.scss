@@ -1,6 +1,8 @@
 @import '@/assets/styles/_variables.scss';
 
 body {
+  background: #393939;
+  color: #e7e7e7;
   //background: url('https://cdn.pixabay.com/photo/2018/03/29/12/23/the-background-3272132_1280.jpg');
 }
 
@@ -30,7 +32,7 @@ code.hljs {
 
 .color--gray {
   background-color: $colorGray;
-  border: $rectBorderBaseParameters darken($colorGray, 40%);
+  border: $rectBorderBaseParameters darken($colorGray, 30%);
 
   &-darken {
     background-color: darken($colorGray, 15%);
@@ -39,7 +41,7 @@ code.hljs {
 }
 
 .color--green__border {
-  border: $rectBorderBaseParameters darken($colorGreen, 30%);
+  border: $rectBorderBaseParameters darken($colorGreen, 25%);
 }
 
 .color--green {
@@ -48,7 +50,7 @@ code.hljs {
 }
 
 .color--yellow__border {
-  border: $rectBorderBaseParameters darken($colorYellow, 30%);
+  border: $rectBorderBaseParameters darken($colorYellow, 50%);
 }
 
 .color--yellow {
@@ -81,6 +83,14 @@ code.hljs {
 .row {
   display: flex;
   justify-content: space-around;
+
+  &--justify-center {
+    justify-content: center;
+  }
+
+  &--align-center {
+    align-items: center;
+  }
 }
 
 /* for block of numbers */
@@ -109,7 +119,7 @@ code.hljs {
 /* Transitions */
 
 $transitionOffset: -50px;
-$transitionParams: all 1s linear;
+$transitionParams: all .3s linear;
 
 // Fade
 .fade-enter-active,

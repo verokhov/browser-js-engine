@@ -20,6 +20,7 @@
       <div class="row">
         <engine-queue
             :items="tasks"
+            :active="activeQueue === 'tasks'"
             label="Tasks"
             type="column"
             color="green__border"
@@ -30,6 +31,7 @@
         <engine-loop ref="loop" />
         <engine-queue
             :items="renderTasks"
+            :active="activeQueue === 'renderTasks'"
             label="Render tasks"
             type="column"
             color="yellow__border"
@@ -41,6 +43,7 @@
       <div class="row">
         <engine-queue
             :items="microtasks"
+            :active="activeQueue === 'microtasks'"
             label="Microtasks"
             type="column"
             color="blue__border"
@@ -57,7 +60,7 @@
 <script>
 import { uid } from 'uid';
 
-import { ACTIONS_TYPES, QUEUES_TYPES } from '@/constants';
+import { ACTIONS_TYPES, GO_TO_TYPES, POSITIONS_TO_QUEUES } from '@/constants';
 
 import EventLoopService from '../../services/event-loop';
 
@@ -66,6 +69,21 @@ import EngineLoop from './partials/engine-loop.vue';
 import EngineAlerts from './partials/engine-alets.vue';
 
 const createActionByContent = content => ({ key: uid(), content });
+
+const QUEUES_SPECOAL_REMOVE_METHODS_MAP = {
+  callstack: 'pop',
+  log: 'pop',
+}
+
+const getNearestGoToForStep = (steps, index = 0) => {
+  for (let i = index; i >= 0; --i) {
+    if (steps[i].goTo) {
+      return steps[i].goTo;
+    }
+  }
+
+  return GO_TO_TYPES.top;
+};
 
 export default {
   components: {
@@ -91,6 +109,7 @@ export default {
       microtasks: [],
       renderTasks: [],
       alerts: [],
+      activeQueue: null,
     }
   },
   computed: {
@@ -100,14 +119,22 @@ export default {
   },
   watch: {
     activeStepIndex(value, oldValue) {
-      if (value > oldValue) {
-        this.nextProcess();
-      } else if (value < oldValue) {
-        this.prevProcess();
+      const diff = value - oldValue;
+      if (diff === -1) {
+        return this.prevProcess(value);
+      } else if (diff === 1) {
+        return this.nextProcess(value);
       }
+
+      this.goToProcess(diff);
     },
   },
   mounted() {
+    /**
+     * We don't need reactivity here
+     */
+    this.removedActions = [];
+
     this.$eventLoop = new EventLoopService({
       el: this.$refs.loop.$refs.pointer,
       radius: 208,
@@ -115,44 +142,70 @@ export default {
     });
   },
   methods: {
-    nextProcess() {
-      const { goTo, actions = [] } = this.steps[this.activeStepIndex];
+    nextProcess(index) {
+      const { goTo, actions = [] } = this.steps[index];
 
       if (goTo && this.$eventLoop) {
-        setTimeout(() => this.$eventLoop.goToPosition(goTo), 100);
+        this.goToPosition(goTo);
       }
 
-      actions.forEach(({ queue, type, content }) => {
+      actions.forEach((action) => {
+        const { type, queue, content } = action;
+
         if (type === ACTIONS_TYPES.remove) {
-          if (queue === QUEUES_TYPES.callstack) {
-            this.callstack.pop();
-          } else {
-            this[queue].shift();
-          }
-        } else {
-          this[queue].push(createActionByContent(content));
+          const removedAction = this[queue][QUEUES_SPECOAL_REMOVE_METHODS_MAP[queue] || 'shift']();
+
+          return this.removedActions.push({ action: removedAction, forAction: action });
+        }
+
+        this[queue].push(createActionByContent(content));
+      });
+    },
+
+    prevProcess(index) {
+      const { goTo: prevGoTo, actions: prevActions = [] } = this.steps[index + 1];
+
+      if (prevGoTo) {
+        const goTo = getNearestGoToForStep(this.steps, index);
+
+        this.goToPosition(goTo, goTo !== GO_TO_TYPES.infinity);
+      }
+
+      prevActions.forEach((prevAction) => {
+        const { type, queue } = prevAction;
+
+        if (type === ACTIONS_TYPES.add) {
+          return this[queue][QUEUES_SPECOAL_REMOVE_METHODS_MAP[queue] || 'shift']();
+        }
+
+        const { action: removedAction } = this.removedActions.find(({ forAction }) => forAction === prevAction) || {};
+
+        if (removedAction) {
+          this[queue].push(removedAction);
         }
       });
     },
 
-    prevProcess() {
-      const { goTo, actions = [] } = this.steps[this.activeStepIndex];
-
-      if (goTo) {
-        this.$eventLoop.goToPosition(goTo);
-      }
-
-      actions.forEach(({ queue, type, content }) => {
-        if (type === ACTIONS_TYPES.remove) {
-          if (queue === QUEUES_TYPES.callstack) {
-            this.callstack.pop();
-          } else {
-            this[queue].shift();
-          }
-        } else {
-          this[queue].push(createActionByContent(content));
+    goToProcess(diff) {
+      if (diff < 0) {
+        while (diff <= 0) {
+          this.prevProcess(this.activeStepIndex - diff);
+          ++diff;
         }
-      });
+      } else {
+        while (diff >= 0) {
+          this.nextProcess(this.activeStepIndex - diff);
+          --diff;
+        }
+      }
+    },
+
+    goToPosition(position, reverse = false) {
+      setTimeout(() => {
+        this.$eventLoop.goToPosition(position, reverse);
+
+        this.activeQueue = POSITIONS_TO_QUEUES[position] || null;
+      }, 100);
     },
   },
 };

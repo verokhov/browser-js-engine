@@ -39,11 +39,16 @@ export default {
       type: String,
       default: 'fade',
     },
+    active: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     wrapperClass() {
       return {
         'rect-wrapper': true,
+        'rect-wrapper--active': this.active,
         [`rect-wrapper--${this.type}`]: true,
         [`color--${this.color}`]: true,
       }
@@ -53,12 +58,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$minHeight: 52px;
+
 .rect-wrapper {
   position: relative;
   display: flex;
 
   &--row {
-    height: 50px;
+    min-height: $minHeight;
     width: 840px;
 
     & >>> .rect {
@@ -74,7 +81,7 @@ export default {
     margin-top: 10px;
     flex-direction: column;
     width: 230px;
-    min-height: 50px;
+    min-height: $minHeight;
 
     & >>> .rect {
       margin-top: 0;
@@ -83,6 +90,24 @@ export default {
         margin-top: 4px;
       }
     }
+  }
+
+  &:before {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    background: $colorRed;
+    top: 15px;
+    left: -30px;
+    z-index: 2;
+    opacity: 0;
+    transition: opacity .3s ease;
+  }
+
+  &--active:before {
+    opacity: 1;
   }
 }
 </style>

@@ -55,6 +55,12 @@ export const QUEUES_TYPES = {
   alerts: 'alerts',
 }
 
+export const POSITIONS_TO_QUEUES = {
+  [GO_TO_TYPES.left]: QUEUES_TYPES.tasks,
+  [GO_TO_TYPES.bottom]: QUEUES_TYPES.microtasks,
+  [GO_TO_TYPES.right]: QUEUES_TYPES.renderTasks,
+}
+
 export const ACTIONS_TYPES = {
   add: 'add',
   remove: 'remove',
@@ -118,7 +124,7 @@ console.log('A5', a);`,
       {
         lines: '10',
         actions: [
-          {queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove}
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove }
         ]
       },
       {

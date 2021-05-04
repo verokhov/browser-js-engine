@@ -1,6 +1,6 @@
 <template>
   <div class="alert-wrapper">
-    <transition-group name="slide-y-fade">
+    <transition-group name="fade">
       <div v-for="alert in alerts" :key="alert.key" class="alert">{{ alert.content }}</div>
     </transition-group>
   </div>
@@ -35,9 +35,9 @@ export default {
     padding: 20px;
     font-size: 1.2rem;
     border-radius: 5px;
-    background: $colorGray;
-    border: 1px solid darken($colorGray, 10);
+    background: darken($colorGray, 30);
     position: relative;
+    color: $textColor;
   }
 }
 </style>

@@ -7,6 +7,7 @@
         :color="color"
         :item-color="itemColor"
         :transition="transition"
+        :active="active"
     ></event-loop-rects-list>
   </div>
 </template>
@@ -41,6 +42,10 @@ export default {
     transition: {
       type: String,
       default: 'fade',
+    },
+    active: {
+      type: Boolean,
+      default: false,
     },
   },
 };
