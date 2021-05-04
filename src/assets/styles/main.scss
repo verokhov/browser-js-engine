@@ -1,0 +1,228 @@
+@import '@/assets/styles/_variables.scss';
+
+body {
+  //background: url('https://cdn.pixabay.com/photo/2018/03/29/12/23/the-background-3272132_1280.jpg');
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif, Arial;
+}
+
+code.hljs {
+  font-size: 1.2em;
+  line-height: 1.4em;
+  border-radius: 10px;
+  padding: 1em;
+
+  tr {
+    transition: opacity .2s linear;
+  }
+
+  &, * {
+    font-family: monospace;
+  }
+
+  &.has-highlights tr:not(.highlight-line) {
+    opacity: .4;
+  }
+}
+
+.color--gray {
+  background-color: $colorGray;
+  border: $rectBorderBaseParameters darken($colorGray, 40%);
+
+  &-darken {
+    background-color: darken($colorGray, 15%);
+    border: $rectBorderBaseParameters darken($colorGray, 40%);
+  }
+}
+
+.color--green__border {
+  border: $rectBorderBaseParameters darken($colorGreen, 30%);
+}
+
+.color--green {
+  background-color: $colorGreen;
+  @extend .color--green__border;
+}
+
+.color--yellow__border {
+  border: $rectBorderBaseParameters darken($colorYellow, 30%);
+}
+
+.color--yellow {
+  background-color: $colorYellow;
+  @extend .color--yellow__border;
+}
+
+.color--blue__border {
+  border: $rectBorderBaseParameters darken($colorBlue, 30%);
+}
+
+.color--blue {
+  background-color: $colorBlue;
+  @extend .color--blue__border;
+}
+
+.color--red__border {
+  border: $rectBorderBaseParameters darken($colorRed, 30%);
+}
+
+.color--red {
+  background-color: $colorRed;
+  @extend .color--red__border;
+}
+
+.content {
+  margin: 20px;
+}
+
+.row {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* for block of numbers */
+.hljs-ln-numbers {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  text-align: right;
+  color: #8b8b8b;
+  border-right: 1px solid #4c4c4c;
+  vertical-align: top;
+  padding-right: 5px !important;
+
+  /* your custom style here */
+}
+
+/* for block of code */
+.hljs-ln-code {
+  padding-left: 10px !important;
+}
+
+/* Transitions */
+
+$transitionOffset: -50px;
+$transitionParams: all 1s linear;
+
+// Fade
+.fade-enter-active,
+.fade-leave-active {
+  transition: $transitionParams;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+// Slide x
+.slide-x-enter-active,
+.slide-x-leave-active {
+  transition: $transitionParams;
+}
+
+.slide-x-enter-to {
+  position: absolute;
+  right: 0;
+}
+
+.slide-x-enter-from {
+  position: absolute;
+  right: $transitionOffset;
+}
+
+.slide-x-leave-to {
+  position: absolute;
+  left: $transitionOffset;
+}
+
+.slide-x-leave-from {
+  position: absolute;
+  left: 0;
+}
+
+// Slide y
+.slide-y-enter-active,
+.slide-y-leave-active {
+  transition: $transitionParams;
+}
+
+.slide-y-enter-to {
+  position: absolute;
+  bottom: 0;
+}
+
+.slide-y-enter-from {
+  position: absolute;
+  bottom: $transitionOffset;
+}
+
+.slide-y-leave-to {
+  position: absolute;
+  top: $transitionOffset;
+}
+
+.slide-y-leave-from {
+  position: absolute;
+  top: 0;
+}
+
+// Slide x fade
+.slide-x-fade-enter-active,
+.slide-x-fade-leave-active {
+  @extend .slide-x-enter-active;
+}
+
+.slide-x-fade-enter-to {
+  @extend .slide-x-enter-to;
+}
+
+.slide-x-fade-enter-from {
+  @extend .slide-x-enter-from;
+}
+
+.slide-x-fade-leave-to {
+  @extend .fade-leave-to;
+  @extend .slide-x-leave-to;
+}
+
+.slide-x-fade-leave-from {
+  @extend .fade-enter-from;
+  @extend .slide-x-leave-from;
+}
+
+// Slide y fade
+.slide-y-fade-enter-active,
+.slide-y-fade-leave-active {
+  @extend .slide-y-enter-active;
+}
+
+.slide-y-fade-enter-to {
+  @extend .slide-y-enter-to;
+}
+
+.slide-y-fade-enter-from {
+  @extend .slide-y-enter-from;
+}
+
+.slide-y-fade-leave-to {
+  @extend .fade-leave-to;
+  @extend .slide-y-leave-to;
+}
+
+.slide-y-fade-leave-from {
+  @extend .fade-enter-from;
+  @extend .slide-y-leave-from;
+}
