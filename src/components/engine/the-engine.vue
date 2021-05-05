@@ -196,7 +196,9 @@ export default {
           .find(({ forAction }) => forAction === prevAction) || {};
 
         if (removedAction) {
-          this[queue].push(removedAction);
+          const method = [QUEUES_TYPES.callstack, QUEUES_TYPES.log].includes(queue) ? 'push' : 'unshift';
+
+          this[queue][method](removedAction);
         }
       });
     },
