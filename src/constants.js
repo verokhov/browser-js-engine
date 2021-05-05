@@ -18,7 +18,7 @@ export const POINTER_POSITIONS_TO_DEGREES = {
   [POINTER_POSITIONS.left]: DEGREES.left,
   [POINTER_POSITIONS.bottom]: DEGREES.bottom,
   [POINTER_POSITIONS.right]: DEGREES.right,
-}
+};
 
 export const QUEUES_TYPES = {
   tasks: 'tasks',
@@ -27,22 +27,13 @@ export const QUEUES_TYPES = {
   callstack: 'callstack',
   log: 'log',
   alerts: 'alerts',
-}
-
-export const QUEUES_TYPES_TO_REMOVE_METHODS = {
-  [QUEUES_TYPES.tasks]: 'shift',
-  [QUEUES_TYPES.microtasks]: 'shift',
-  [QUEUES_TYPES.renderTasks]: 'shift',
-  [QUEUES_TYPES.callstack]: 'pop',
-  [QUEUES_TYPES.log]: 'pop',
-  [QUEUES_TYPES.alerts]: 'shift',
-}
+};
 
 export const POINTER_POSITIONS_TO_QUEUES = {
   [POINTER_POSITIONS.left]: QUEUES_TYPES.tasks,
   [POINTER_POSITIONS.bottom]: QUEUES_TYPES.microtasks,
   [POINTER_POSITIONS.right]: QUEUES_TYPES.renderTasks,
-}
+};
 
 export const ACTIONS_TYPES = {
   add: 'add',
@@ -50,6 +41,183 @@ export const ACTIONS_TYPES = {
 };
 
 export const EXAMPLES = {
+  1: {
+    code: `function foo(b) {
+  const a = 10;
+  return a + b + 11;
+}
+
+function bar(x) {
+  const y = 3;
+  return foo(x * y);
+}
+
+console.log(bar(7));`,
+    steps: [
+      {
+        lines: '1-11',
+      },
+      {
+        lines: '1-11',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Script' },
+        ],
+      },
+      {
+        lines: '11',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'bar(7)' },
+        ],
+      },
+      {
+        lines: '6-9',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'foo(7 * 3)' },
+        ],
+      },
+      {
+        lines: '1-4',
+      },
+      {
+        lines: '8',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
+        ],
+      },
+      {
+        lines: '11',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
+        ],
+      },
+      {
+        lines: '11',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'console.log(42)' },
+        ],
+      },
+      {
+        lines: '11',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
+          { queue: QUEUES_TYPES.log, type: ACTIONS_TYPES.add, content: '42' },
+        ],
+      },
+      {
+        lines: '1-11',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
+        ],
+      },
+    ],
+  },
+  2: {
+    code: `function g() {
+  console.log('bar');
+}
+
+function h() {
+  console.log('blix');
+}
+
+function f() {
+  console.log('foo');
+  setTimeout(g, 0);
+  console.log('baz');
+  h();
+}
+
+f();`,
+    steps: [
+      { lines: '1-16' },
+      {
+        lines: '1-16',
+        pointerPosition: POINTER_POSITIONS.left,
+        actions: [
+          { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'Script' },
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Script' },
+        ],
+      },
+      {
+        lines: '16',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'f()' },
+        ],
+      },
+      {
+        lines: '10',
+        actions: [
+          { queue: QUEUES_TYPES.log, type: ACTIONS_TYPES.add, content: 'foo' },
+        ],
+      },
+      {
+        lines: '11',
+        actions: [
+          { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.add, content: 'WebAPI call for setTimeout' },
+        ],
+      },
+      {
+        lines: '12',
+        actions: [
+          { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.remove },
+          { queue: QUEUES_TYPES.log, type: ACTIONS_TYPES.add, content: 'baz' },
+          { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'g' },
+        ],
+      },
+      {
+        lines: '13',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'h()' },
+        ],
+      },
+      {
+        lines: '6',
+        actions: [
+          { queue: QUEUES_TYPES.log, type: ACTIONS_TYPES.add, content: 'blix' },
+        ],
+      },
+      {
+        lines: '13',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
+        ],
+      },
+      {
+        lines: '16',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
+        ],
+      },
+      {
+        lines: '1-16',
+        pointerPosition: POINTER_POSITIONS.left,
+        actions: [
+          { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
+        ],
+      },
+      {
+        lines: '1-3',
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'g()' },
+        ],
+      },
+      {
+        lines: '2',
+        actions: [
+          { queue: QUEUES_TYPES.log, type: ACTIONS_TYPES.add, content: 'bar' },
+        ],
+      },
+      {
+        lines: '1-16',
+        pointerPosition: POINTER_POSITIONS.infinity,
+        actions: [
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
+          { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
+        ],
+      },
+    ],
+  },
   12: {
     code: `let a;
 

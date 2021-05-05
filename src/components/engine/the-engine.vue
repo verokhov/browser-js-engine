@@ -63,7 +63,6 @@ import {
   QUEUES_TYPES,
   POINTER_POSITIONS,
   POINTER_POSITIONS_TO_QUEUES,
-  QUEUES_TYPES_TO_REMOVE_METHODS,
 } from '@/constants';
 
 import EventLoopPointerService from '../../services/event-loop-pointer';
@@ -136,14 +135,18 @@ export default {
      */
     this.$removedActions = [];
 
-    this.$eventLoopPointer = new EventLoopPointerService({
-      el: this.$refs.loop.$refs.pointer,
-      radius: 208, // Matched imperatively
-      center: 206, // Matched imperatively
-    });
+    if (this.$refs.loop) {
+      this.$eventLoopPointer = new EventLoopPointerService({
+        el: this.$refs.loop.$refs.pointer,
+        radius: 208, // Matched imperatively
+        center: 206, // Matched imperatively
+      });
+    }
   },
   beforeUnmount() {
-    this.$eventLoopPointer.stopInfinity();
+    if (this.$eventLoopPointer) {
+      this.$eventLoopPointer.stopInfinity();
+    }
   },
   methods: {
     /**
@@ -162,7 +165,8 @@ export default {
         const { type, queue, content } = action;
 
         if (type === ACTIONS_TYPES.remove) {
-          const removedAction = this[queue][QUEUES_TYPES_TO_REMOVE_METHODS[queue]]();
+          const method = [QUEUES_TYPES.callstack, QUEUES_TYPES.log].includes(queue) ? 'pop' : 'shift';
+          const removedAction = this[queue][method]();
 
           return this.$removedActions.push({ action: removedAction, forAction: action });
         }
@@ -189,7 +193,7 @@ export default {
         const { type, queue } = prevAction;
 
         if (type === ACTIONS_TYPES.add) {
-          return this[queue][QUEUES_TYPES_TO_REMOVE_METHODS[queue]]();
+          return this[queue].pop();
         }
 
         const { action: removedAction } = this.$removedActions
@@ -233,6 +237,10 @@ export default {
      * @param {boolean} [reverse = false]
      */
     pointerGoToPosition(position, reverse = false) {
+      if (!this.$eventLoopPointer) {
+        return;
+      }
+
       clearTimeout(this.pointerTimer);
 
       this.pointerTimer = setTimeout(async () => {
