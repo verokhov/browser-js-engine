@@ -210,11 +210,15 @@ export default {
      */
     goToProcess(diff) {
       if (diff < 0) {
+        ++diff;
+
         while (diff <= 0) {
           this.prevProcess(this.activeStepIndex - diff);
           ++diff;
         }
       } else {
+        --diff;
+
         while (diff >= 0) {
           this.nextProcess(this.activeStepIndex - diff);
           --diff;

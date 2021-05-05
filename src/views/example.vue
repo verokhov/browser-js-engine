@@ -123,7 +123,7 @@ export default {
     },
 
     goTo(index) {
-      if (index > 0 && index < this.steps.length && index !== this.activeStepIndex) {
+      if (index >= 0 && index < this.steps.length && index !== this.activeStepIndex) {
         this.activeStepIndex = index;
       }
     },
