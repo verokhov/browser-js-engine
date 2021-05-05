@@ -1,0 +1,53 @@
+/**
+ * @typedef {'task' | 'microtask' | 'rendertask' | 'log' | 'callstack' | 'alert'} EngineStepActionQueue
+ */
+
+/**
+ * @typedef {'add' | 'remove'} EngineStepActionType
+ */
+
+/**
+ * @typedef {'top' | 'left' | 'bottom' | 'right' | 'infinity'} EngineStepPointerPosition
+ */
+
+/**
+ * @typedef {Object} EngineStepAction
+ * @property {EngineStepActionQueue} queue
+ * @property {EngineStepActionType} type
+ * @property {string} content
+ */
+
+/**
+ * @typedef {Object} EngineStep
+ * @property {string | number} lines
+ * @property {EngineStepPointerPosition} [pointerPosition]
+ * @property {EngineStepAction[]} [actions]
+ */
+
+import { uid } from 'uid';
+import { POINTER_POSITIONS } from '@/constants';
+
+/**
+ * Create action with uid key and passed content
+ *
+ * @param {string} content
+ * @returns {{key: string, content: string}}
+ */
+export const createActionByContent = content => ({ key: uid(), content });
+
+/**
+ * Get nearest pointer position less then passed step
+ *
+ * @param {EngineStep[]} steps
+ * @param {number} [index = 0]
+ * @returns {EngineStepPointerPosition}
+ */
+export const getNearestPointerPositionForStep = (steps, index = 0) => {
+  for (let i = index; i >= 0; --i) {
+    if (steps[i].pointerPosition) {
+      return steps[i].pointerPosition;
+    }
+  }
+
+  return POINTER_POSITIONS.top;
+};

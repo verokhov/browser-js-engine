@@ -1,30 +1,4 @@
-/**
- * @typedef {'task' | 'microtask' | 'rendertask' | 'log' | 'callstack' | 'alert'} EngineStepActionQueue
- */
-
-/**
- * @typedef {'add' | 'remove'} EngineStepActionType
- */
-
-/**
- * @typedef {'top' | 'left' | 'bottom' | 'right' | 'infinity'} EngineStepGoTo
- */
-
-/**
- * @typedef {Object} EngineStepAction
- * @property {EngineStepActionQueue} queue
- * @property {EngineStepActionType} type
- * @property {string} content
- */
-
-/**
- * @typedef {Object} EngineStep
- * @property {string | number} lines
- * @property {EngineStepGoTo} [goTo]
- * @property {EngineStepAction[]} [actions]
- */
-
-export const GO_TO_TYPES = {
+export const POINTER_POSITIONS = {
   top: 'top',
   left: 'left',
   bottom: 'bottom',
@@ -39,11 +13,11 @@ export const DEGREES = {
   right: 270,
 };
 
-export const GO_TO_TYPES_TO_DEGREES = {
-  [GO_TO_TYPES.top]: DEGREES.top,
-  [GO_TO_TYPES.left]: DEGREES.left,
-  [GO_TO_TYPES.bottom]: DEGREES.bottom,
-  [GO_TO_TYPES.right]: DEGREES.right,
+export const POINTER_POSITIONS_TO_DEGREES = {
+  [POINTER_POSITIONS.top]: DEGREES.top,
+  [POINTER_POSITIONS.left]: DEGREES.left,
+  [POINTER_POSITIONS.bottom]: DEGREES.bottom,
+  [POINTER_POSITIONS.right]: DEGREES.right,
 }
 
 export const QUEUES_TYPES = {
@@ -55,10 +29,19 @@ export const QUEUES_TYPES = {
   alerts: 'alerts',
 }
 
-export const POSITIONS_TO_QUEUES = {
-  [GO_TO_TYPES.left]: QUEUES_TYPES.tasks,
-  [GO_TO_TYPES.bottom]: QUEUES_TYPES.microtasks,
-  [GO_TO_TYPES.right]: QUEUES_TYPES.renderTasks,
+export const QUEUES_TYPES_TO_REMOVE_METHODS = {
+  [QUEUES_TYPES.tasks]: 'shift',
+  [QUEUES_TYPES.microtasks]: 'shift',
+  [QUEUES_TYPES.renderTasks]: 'shift',
+  [QUEUES_TYPES.callstack]: 'pop',
+  [QUEUES_TYPES.log]: 'pop',
+  [QUEUES_TYPES.alerts]: 'shift',
+}
+
+export const POINTER_POSITIONS_TO_QUEUES = {
+  [POINTER_POSITIONS.left]: QUEUES_TYPES.tasks,
+  [POINTER_POSITIONS.bottom]: QUEUES_TYPES.microtasks,
+  [POINTER_POSITIONS.right]: QUEUES_TYPES.renderTasks,
 }
 
 export const ACTIONS_TYPES = {
@@ -93,7 +76,7 @@ console.log('A5', a);`,
       },
       {
         lines: '1',
-        goTo: GO_TO_TYPES.left,
+        pointerPosition: POINTER_POSITIONS.left,
         actions: [
           { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'Script' },
           { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Script' }
@@ -150,7 +133,7 @@ console.log('A5', a);`,
       },
       {
         lines: '1-19',
-        goTo: GO_TO_TYPES.infinity,
+        pointerPosition: POINTER_POSITIONS.infinity,
         actions: [
           { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
           { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
@@ -159,7 +142,7 @@ console.log('A5', a);`,
       },
       {
         lines: '1-19',
-        goTo: GO_TO_TYPES.left,
+        pointerPosition: POINTER_POSITIONS.left,
         actions: [
           { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.remove },
           { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'setTimeout1' },
@@ -192,7 +175,7 @@ console.log('A5', a);`,
       },
       {
         lines: '8',
-        goTo: GO_TO_TYPES.bottom,
+        pointerPosition: POINTER_POSITIONS.bottom,
         actions: [
           { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
         ],
@@ -217,7 +200,7 @@ console.log('A5', a);`,
       },
       {
         lines: '17',
-        goTo: GO_TO_TYPES.left,
+        pointerPosition: POINTER_POSITIONS.left,
         actions: [
           { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.remove },
         ],
@@ -245,7 +228,7 @@ console.log('A5', a);`,
       },
       {
         lines: '1-19',
-        goTo: 'infinity',
+        pointerPosition: POINTER_POSITIONS.infinity,
         actions: [
           { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
         ],

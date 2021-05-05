@@ -33,8 +33,8 @@
 import { EXAMPLES } from '@/constants';
 
 import TheEngine from '@/components/engine/the-engine.vue';
-import VControlArrow from '@/components/common/v-control-arrow.vue';
-import VControlPoints from '@/components/common/v-control-points.vue';
+import VControlArrow from '@/components/common/controls/v-control-arrow.vue';
+import VControlPoints from '@/components/common/controls/v-control-points.vue';
 
 export default {
   components: { TheEngine, VControlArrow, VControlPoints },

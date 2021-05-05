@@ -16,11 +16,11 @@
           transition="slide-x-fade"
       />
     </div>
-    <div class="content">
+    <div v-if="hasPointerPositions" class="content">
       <div class="row">
         <engine-queue
             :items="tasks"
-            :active="activeQueue === 'tasks'"
+            :active="isTasksActive"
             label="Tasks"
             type="column"
             color="green__border"
@@ -31,7 +31,7 @@
         <engine-loop ref="loop" />
         <engine-queue
             :items="renderTasks"
-            :active="activeQueue === 'renderTasks'"
+            :active="isRenderTasksActive"
             label="Render tasks"
             type="column"
             color="yellow__border"
@@ -43,7 +43,7 @@
       <div class="row">
         <engine-queue
             :items="microtasks"
-            :active="activeQueue === 'microtasks'"
+            :active="isMicrotasksActive"
             label="Microtasks"
             type="column"
             color="blue__border"
@@ -58,32 +58,21 @@
 </template>
 
 <script>
-import { uid } from 'uid';
+import {
+  ACTIONS_TYPES,
+  QUEUES_TYPES,
+  POINTER_POSITIONS,
+  POINTER_POSITIONS_TO_QUEUES,
+  QUEUES_TYPES_TO_REMOVE_METHODS,
+} from '@/constants';
 
-import { ACTIONS_TYPES, GO_TO_TYPES, POSITIONS_TO_QUEUES } from '@/constants';
+import EventLoopPointerService from '../../services/event-loop-pointer';
 
-import EventLoopService from '../../services/event-loop';
+import { createActionByContent, getNearestPointerPositionForStep } from '@/helpers/engine';
 
 import EngineQueue from './partials/engine-queue.vue';
 import EngineLoop from './partials/engine-loop.vue';
 import EngineAlerts from './partials/engine-alets.vue';
-
-const createActionByContent = content => ({ key: uid(), content });
-
-const QUEUES_SPECOAL_REMOVE_METHODS_MAP = {
-  callstack: 'pop',
-  log: 'pop',
-}
-
-const getNearestGoToForStep = (steps, index = 0) => {
-  for (let i = index; i >= 0; --i) {
-    if (steps[i].goTo) {
-      return steps[i].goTo;
-    }
-  }
-
-  return GO_TO_TYPES.top;
-};
 
 export default {
   components: {
@@ -113,8 +102,20 @@ export default {
     }
   },
   computed: {
-    currentStep() {
-      return this.steps[this.activeStepIndex];
+    hasPointerPositions() {
+      return this.steps.some(step => step.pointerPosition);
+    },
+
+    isTasksActive() {
+      return this.activeQueue === QUEUES_TYPES.tasks;
+    },
+
+    isRenderTasksActive() {
+      return this.activeQueue === QUEUES_TYPES.renderTasks;
+    },
+
+    isMicrotasksActive() {
+      return this.activeQueue === QUEUES_TYPES.microtasks;
     },
   },
   watch: {
@@ -133,52 +134,66 @@ export default {
     /**
      * We don't need reactivity here
      */
-    this.removedActions = [];
+    this.$removedActions = [];
 
-    this.$eventLoop = new EventLoopService({
+    this.$eventLoopPointer = new EventLoopPointerService({
       el: this.$refs.loop.$refs.pointer,
-      radius: 208,
-      center: 206,
+      radius: 208, // Matched imperatively
+      center: 206, // Matched imperatively
     });
   },
+  beforeUnmount() {
+    this.$eventLoopPointer.stopInfinity();
+  },
   methods: {
+    /**
+     * Process method for go to next step
+     *
+     * @param {number} index
+     */
     nextProcess(index) {
-      const { goTo, actions = [] } = this.steps[index];
+      const { pointerPosition, actions = [] } = this.steps[index];
 
-      if (goTo && this.$eventLoop) {
-        this.goToPosition(goTo);
+      if (pointerPosition) {
+        this.pointerGoToPosition(pointerPosition);
       }
 
       actions.forEach((action) => {
         const { type, queue, content } = action;
 
         if (type === ACTIONS_TYPES.remove) {
-          const removedAction = this[queue][QUEUES_SPECOAL_REMOVE_METHODS_MAP[queue] || 'shift']();
+          const removedAction = this[queue][QUEUES_TYPES_TO_REMOVE_METHODS[queue]]();
 
-          return this.removedActions.push({ action: removedAction, forAction: action });
+          return this.$removedActions.push({ action: removedAction, forAction: action });
         }
 
         this[queue].push(createActionByContent(content));
       });
     },
 
+    /**
+     * Process method for go to previous step
+     *
+     * @param {number} index
+     */
     prevProcess(index) {
-      const { goTo: prevGoTo, actions: prevActions = [] } = this.steps[index + 1];
+      const { pointerPosition: prevPointerPosition, actions: prevActions = [] } = this.steps[index + 1];
 
-      if (prevGoTo) {
-        const goTo = getNearestGoToForStep(this.steps, index);
+      if (prevPointerPosition) {
+        const pointerPosition = getNearestPointerPositionForStep(this.steps, index);
 
-        this.goToPosition(goTo, goTo !== GO_TO_TYPES.infinity);
+        this.pointerGoToPosition(pointerPosition, pointerPosition !== POINTER_POSITIONS.infinity);
       }
 
       prevActions.forEach((prevAction) => {
         const { type, queue } = prevAction;
 
         if (type === ACTIONS_TYPES.add) {
-          return this[queue][QUEUES_SPECOAL_REMOVE_METHODS_MAP[queue] || 'shift']();
+          return this[queue][QUEUES_TYPES_TO_REMOVE_METHODS[queue]]();
         }
 
-        const { action: removedAction } = this.removedActions.find(({ forAction }) => forAction === prevAction) || {};
+        const { action: removedAction } = this.$removedActions
+          .find(({ forAction }) => forAction === prevAction) || {};
 
         if (removedAction) {
           this[queue].push(removedAction);
@@ -186,6 +201,11 @@ export default {
       });
     },
 
+    /**
+     * Process method for go to special step by diff
+     *
+     * @param {number} diff
+     */
     goToProcess(diff) {
       if (diff < 0) {
         while (diff <= 0) {
@@ -200,11 +220,21 @@ export default {
       }
     },
 
-    goToPosition(position, reverse = false) {
-      setTimeout(() => {
-        this.$eventLoop.goToPosition(position, reverse);
+    /**
+     * Call pointer go to special position with reverse parameter
+     *
+     * @param {EngineStepPointerPosition} position
+     * @param {boolean} [reverse = false]
+     */
+    pointerGoToPosition(position, reverse = false) {
+      clearTimeout(this.pointerTimer);
 
-        this.activeQueue = POSITIONS_TO_QUEUES[position] || null;
+      this.pointerTimer = setTimeout(async () => {
+        this.activeQueue = null;
+
+        await this.$eventLoopPointer.goToPosition(position, reverse);
+
+        this.activeQueue = POINTER_POSITIONS_TO_QUEUES[position] || null;
       }, 100);
     },
   },
