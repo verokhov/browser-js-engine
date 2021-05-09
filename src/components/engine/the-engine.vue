@@ -67,7 +67,11 @@ import {
 
 import EventLoopPointerService from '../../services/event-loop-pointer';
 
-import { createActionByContent, getNearestPointerPositionForStep } from '@/helpers/engine';
+import {
+  createActionByContent,
+  getNearestPointerPositionForStep,
+  getSortedActionsByType,
+} from '@/helpers/engine';
 
 import EngineQueue from './partials/engine-queue.vue';
 import EngineLoop from './partials/engine-loop.vue';
@@ -161,7 +165,7 @@ export default {
         this.pointerGoToPosition(pointerPosition);
       }
 
-      actions.forEach((action) => {
+      getSortedActionsByType(actions, ACTIONS_TYPES.remove).forEach((action) => {
         const { type, queue, content } = action;
 
         if (type === ACTIONS_TYPES.remove) {
@@ -189,22 +193,22 @@ export default {
         this.pointerGoToPosition(pointerPosition, pointerPosition !== POINTER_POSITIONS.infinity);
       }
 
-      prevActions.forEach((prevAction) => {
-        const { type, queue } = prevAction;
+      getSortedActionsByType(prevActions, ACTIONS_TYPES.add).forEach((prevAction) => {
+          const { type, queue } = prevAction;
 
-        if (type === ACTIONS_TYPES.add) {
-          return this[queue].pop();
-        }
+          if (type === ACTIONS_TYPES.add) {
+            return this[queue].pop();
+          }
 
-        const { action: removedAction } = this.$removedActions
-          .find(({ forAction }) => forAction === prevAction) || {};
+          const { action: removedAction } = this.$removedActions
+            .find(({ forAction }) => forAction === prevAction) || {};
 
-        if (removedAction) {
-          const method = [QUEUES_TYPES.callstack, QUEUES_TYPES.log].includes(queue) ? 'push' : 'unshift';
+          if (removedAction) {
+            const method = [QUEUES_TYPES.callstack, QUEUES_TYPES.log].includes(queue) ? 'push' : 'unshift';
 
-          this[queue][method](removedAction);
-        }
-      });
+            this[queue][method](removedAction);
+          }
+        });
     },
 
     /**

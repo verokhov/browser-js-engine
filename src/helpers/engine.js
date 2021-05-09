@@ -25,7 +25,8 @@
  */
 
 import { uid } from 'uid';
-import { POINTER_POSITIONS } from '@/constants';
+
+import { ACTIONS_TYPES, POINTER_POSITIONS } from '@/constants';
 
 /**
  * Create action with uid key and passed content
@@ -51,3 +52,13 @@ export const getNearestPointerPositionForStep = (steps, index = 0) => {
 
   return POINTER_POSITIONS.top;
 };
+
+/**
+ * Get copied sorted actions by passed type
+ *
+ * @param {EngineStepAction[]} actions
+ * @param {EngineStepActionType} type
+ * @returns {EngineStepAction[]}
+ */
+export const getSortedActionsByType = (actions = [], type = ACTIONS_TYPES.add) =>
+  [...actions].sort((a, b) => a.type !== b.type && a.type === type ? -1 : 0)
