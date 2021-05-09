@@ -270,7 +270,7 @@ console.log('script end');`,
         lines: '9',
         actions: [
           { queue: QUEUES_TYPES.log, type: ACTIONS_TYPES.add, content: 'script end' },
-        ]
+        ],
       },
       {
         lines: '6',
@@ -335,7 +335,7 @@ console.log('script end');`,
           { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
         ],
       },
-    ]
+    ],
   },
   4: {
     code: `const loop = () => setTimeout(loop, 0);
@@ -350,7 +350,7 @@ loop();`,
         pointerPosition: POINTER_POSITIONS.left,
         actions: [
           { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'Script' },
-          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Script' }
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Script' },
         ],
       },
       {
@@ -432,7 +432,7 @@ loop();`,
         pointerPosition: POINTER_POSITIONS.left,
         actions: [
           { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'Script' },
-          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Script' }
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Script' },
         ],
       },
       {
@@ -534,7 +534,7 @@ console.log('A5', a);`,
         pointerPosition: POINTER_POSITIONS.left,
         actions: [
           { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'Script' },
-          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Script' }
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Script' },
         ],
       },
       {
@@ -545,45 +545,45 @@ console.log('A5', a);`,
         ],
       },
       {
-        lines: '5'
+        lines: '5',
       },
       {
         lines: '6-9',
         actions: [
-          { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.add, content: 'WebAPI call for setTimeout1' }
-        ]
+          { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.add, content: 'WebAPI call for setTimeout1' },
+        ],
       },
       {
         lines: '6-9',
         actions: [
-          { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.remove }
-        ]
+          { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.remove },
+        ],
       },
       {
         lines: '10',
         actions: [
-          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove }
-        ]
+          { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
+        ],
       },
       {
         lines: '12-15',
         actions: [
-          { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.add, content: 'WebAPI call for setTimeout2' }
-        ]
+          { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.add, content: 'WebAPI call for setTimeout2' },
+        ],
       },
       {
         lines: '12-15',
         actions: [
-          { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.remove }
-        ]
+          { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.remove },
+        ],
       },
       {
-        lines: '17'
+        lines: '17',
       },
       {
         lines: '19',
         actions: [
-          { queue: QUEUES_TYPES.log, type: ACTIONS_TYPES.add, content: 'A5 25' }
+          { queue: QUEUES_TYPES.log, type: ACTIONS_TYPES.add, content: 'A5 25' },
         ],
       },
       {

@@ -1,0 +1,48 @@
+{
+  "root": true,
+  "env": {
+    "node": true
+  },
+  "extends": [
+    "plugin:vue/vue3-essential",
+    "eslint:recommended",
+    "@vue/airbnb"
+  ],
+  "parserOptions": {
+    "parser": "babel-eslint"
+  },
+  "plugins": [
+    "vue"
+  ],
+  "rules": {
+    "default-case": "off",
+    "max-len": ["error", { "code": 120, "ignoreStrings": true }],
+    "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["acc", "diff"] }],
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-return-assign": "off",
+    "vue/order-in-components": ["error", {
+      "order": [
+        "el",
+        "name",
+        "parent",
+        "functional",
+        ["provide", "inject"],
+        ["delimiters", "comments"],
+        ["components", "directives", "filters"],
+        "extends",
+        "mixins",
+        "inheritAttrs",
+        "model",
+        ["props", "propsData"],
+        "data",
+        "computed",
+        "watch",
+        "LIFECYCLE_HOOKS",
+        "methods",
+        ["template", "render"],
+        "renderError"
+      ]
+    }],
+    "import/prefer-default-export": "off"
+  }
+}

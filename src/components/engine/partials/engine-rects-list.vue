@@ -25,7 +25,7 @@ export default {
     type: {
       type: String,
       default: 'row',
-      validator: value => ['row', 'column'].includes(value),
+      validator: (value) => ['row', 'column'].includes(value),
     },
     color: {
       type: String,
@@ -51,7 +51,7 @@ export default {
         'rect-wrapper--active': this.active,
         [`rect-wrapper--${this.type}`]: true,
         [`color--${this.color}`]: true,
-      }
+      };
     },
   },
 };

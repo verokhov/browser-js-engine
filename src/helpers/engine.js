@@ -34,7 +34,7 @@ import { ACTIONS_TYPES, POINTER_POSITIONS } from '@/constants';
  * @param {string} content
  * @returns {{key: string, content: string}}
  */
-export const createActionByContent = content => ({ key: uid(), content });
+export const createActionByContent = (content) => ({ key: uid(), content });
 
 /**
  * Get nearest pointer position less then passed step
@@ -44,7 +44,7 @@ export const createActionByContent = content => ({ key: uid(), content });
  * @returns {EngineStepPointerPosition}
  */
 export const getNearestPointerPositionForStep = (steps, index = 0) => {
-  for (let i = index; i >= 0; --i) {
+  for (let i = index; i >= 0; i -= 1) {
     if (steps[i].pointerPosition) {
       return steps[i].pointerPosition;
     }
@@ -60,5 +60,6 @@ export const getNearestPointerPositionForStep = (steps, index = 0) => {
  * @param {EngineStepActionType} type
  * @returns {EngineStepAction[]}
  */
-export const getSortedActionsByType = (actions = [], type = ACTIONS_TYPES.add) =>
-  [...actions].sort((a, b) => a.type !== b.type && a.type === type ? -1 : 0)
+export const getSortedActionsByType = (actions = [], type = ACTIONS_TYPES.add) => (
+  [...actions].sort((a, b) => (a.type !== b.type && a.type === type ? -1 : 0))
+);

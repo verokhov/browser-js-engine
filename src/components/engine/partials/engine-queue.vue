@@ -37,7 +37,7 @@ export default {
     type: {
       type: String,
       default: 'row',
-      validator: value => ['row', 'column'].includes(value),
+      validator: (value) => ['row', 'column'].includes(value),
     },
     transition: {
       type: String,

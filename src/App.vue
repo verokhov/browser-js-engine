@@ -8,5 +8,5 @@ export default {
   created() {
     window.hljs.initLineNumbersOnLoad();
   },
-}
+};
 </script>

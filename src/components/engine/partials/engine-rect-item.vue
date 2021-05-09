@@ -17,8 +17,8 @@ export default {
       return {
         rect: true,
         [`color--${this.color}`]: true,
-      }
-    }
+      };
+    },
   },
 };
 </script>

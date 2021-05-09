@@ -3,7 +3,9 @@ import { isUndefined } from 'lodash';
 import { POINTER_POSITIONS, POINTER_POSITIONS_TO_DEGREES, DEGREES } from '@/constants';
 
 export default class EventLoopPointer {
-  constructor({ el, radius, center, alpha = Math.PI / 180 } = {}) {
+  constructor({
+    el, radius, center, alpha = Math.PI / 180,
+  } = {}) {
     this.el = el;
     this.radius = radius;
     this.center = center;
@@ -20,7 +22,9 @@ export default class EventLoopPointer {
    * @param {number} degree
    */
   draw(degree) {
-    const { el, radius, center, alpha } = this;
+    const {
+      el, radius, center, alpha,
+    } = this;
     const value = alpha * degree;
 
     this.currentDegree = degree;
@@ -40,7 +44,7 @@ export default class EventLoopPointer {
     const maxDegree = 360 - degreeStep;
     const isDefinedToDegree = !isUndefined(toDegree);
 
-    let currentDegree = this.currentDegree;
+    let { currentDegree } = this;
 
     return new Promise((resolve) => {
       const drawStep = () => {
@@ -92,7 +96,7 @@ export default class EventLoopPointer {
     this.stopInfinity();
 
     if (position === POINTER_POSITIONS.infinity) {
-      return this.goToInfinity()
+      return this.goToInfinity();
     }
 
     return this.goTo(POINTER_POSITIONS_TO_DEGREES[position], reverse);

@@ -65,13 +65,12 @@ import {
   POINTER_POSITIONS_TO_QUEUES,
 } from '@/constants';
 
-import EventLoopPointerService from '../../services/event-loop-pointer';
-
 import {
   createActionByContent,
   getNearestPointerPositionForStep,
   getSortedActionsByType,
 } from '@/helpers/engine';
+import EventLoopPointerService from '../../services/event-loop-pointer';
 
 import EngineQueue from './partials/engine-queue.vue';
 import EngineLoop from './partials/engine-loop.vue';
@@ -102,11 +101,11 @@ export default {
       renderTasks: [],
       alerts: [],
       activeQueue: null,
-    }
+    };
   },
   computed: {
     hasPointerPositions() {
-      return this.steps.some(step => step.pointerPosition);
+      return this.steps.some((step) => step.pointerPosition);
     },
 
     isTasksActive() {
@@ -126,11 +125,11 @@ export default {
       const diff = value - oldValue;
       if (diff === -1) {
         return this.prevProcess(value);
-      } else if (diff === 1) {
+      } if (diff === 1) {
         return this.nextProcess(value);
       }
 
-      this.goToProcess(diff);
+      return this.goToProcess(diff);
     },
   },
   mounted() {
@@ -175,7 +174,7 @@ export default {
           return this.$removedActions.push({ action: removedAction, forAction: action });
         }
 
-        this[queue].push(createActionByContent(content));
+        return this[queue].push(createActionByContent(content));
       });
     },
 
@@ -193,11 +192,13 @@ export default {
         this.pointerGoToPosition(pointerPosition, pointerPosition !== POINTER_POSITIONS.infinity);
       }
 
-      getSortedActionsByType(prevActions, ACTIONS_TYPES.add).forEach((prevAction) => {
+      getSortedActionsByType(prevActions, ACTIONS_TYPES.add)
+        .forEach((prevAction) => {
           const { type, queue } = prevAction;
 
           if (type === ACTIONS_TYPES.add) {
-            return this[queue].pop();
+            this[queue].pop();
+            return;
           }
 
           const { action: removedAction } = this.$removedActions
@@ -217,19 +218,21 @@ export default {
      * @param {number} diff
      */
     goToProcess(diff) {
-      if (diff < 0) {
-        ++diff;
+      let localDiff = diff;
 
-        while (diff <= 0) {
-          this.prevProcess(this.activeStepIndex - diff);
-          ++diff;
+      if (diff < 0) {
+        localDiff += 1;
+
+        while (localDiff <= 0) {
+          this.prevProcess(this.activeStepIndex - localDiff);
+          localDiff += 1;
         }
       } else {
-        --diff;
+        localDiff -= 1;
 
-        while (diff >= 0) {
-          this.nextProcess(this.activeStepIndex - diff);
-          --diff;
+        while (localDiff >= 0) {
+          this.nextProcess(this.activeStepIndex - localDiff);
+          localDiff -= 1;
         }
       }
     },

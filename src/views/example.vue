@@ -100,8 +100,8 @@ export default {
       const linesNumbers = String(lines).split(',')
         .reduce((acc, pattern) => {
           const [from, to] = pattern.split('-');
-          const fromNumber = parseInt(from);
-          const toNumber = parseInt(to);
+          const fromNumber = parseInt(from, 10);
+          const toNumber = parseInt(to, 10);
           const result = to
             ? Array.from({ length: toNumber - fromNumber + 1 }, (value, index) => index + fromNumber)
             : [fromNumber];
@@ -140,7 +140,7 @@ export default {
       }
     },
   },
-}
+};
 </script>
 <style lang="scss" scoped>
 code {
