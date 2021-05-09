@@ -68,7 +68,7 @@ $minHeight: 52px;
     min-height: $minHeight;
     width: 840px;
 
-    & >>> .rect {
+    &:deep(.rect) {
       margin-left: 0;
 
       &:first-of-type {
@@ -83,7 +83,7 @@ $minHeight: 52px;
     width: 230px;
     min-height: $minHeight;
 
-    & >>> .rect {
+    &:deep(.rect) {
       margin-top: 0;
 
       &:first-of-type {
