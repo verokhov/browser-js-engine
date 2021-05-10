@@ -1,5 +1,5 @@
 import { createApp } from 'vue';
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 import { BASE_URL } from '@/config';
 
@@ -9,7 +9,7 @@ import routes from './routes';
 import './assets/styles/main.scss';
 
 const router = createRouter({
-  history: createWebHistory(BASE_URL),
+  history: createWebHashHistory(BASE_URL),
   routes,
 });
 
