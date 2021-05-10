@@ -9,8 +9,7 @@ import routes from './routes';
 import './assets/styles/main.scss';
 
 const router = createRouter({
-  base: BASE_URL,
-  history: createWebHistory(),
+  history: createWebHistory(BASE_URL),
   routes,
 });
 
