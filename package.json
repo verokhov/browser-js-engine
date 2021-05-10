@@ -22,12 +22,14 @@
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-airbnb": "^5.3.0",
     "babel-eslint": "^10.1.0",
+    "babel-plugin-lodash": "^3.3.4",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^7.0.0",
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0",
     "sass": "^1.32.12",
-    "sass-loader": "^10"
+    "sass-loader": "^10",
+    "vue-cli-plugin-webpack-bundle-analyzer": "^4.0.0"
   },
   "browserslist": [
     "> 1%",

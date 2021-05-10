@@ -4,6 +4,7 @@
       v-for="(point, index) in points"
       :key="index"
       :class="{ 'control-point': true, 'control-point--active': activeIndex === index }"
+      :title="`Step ${index + 1}`"
       @click.prevent.stop="$emit('point-click', index)"
     />
   </div>

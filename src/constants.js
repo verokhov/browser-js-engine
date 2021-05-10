@@ -40,8 +40,8 @@ export const ACTIONS_TYPES = {
   remove: 'remove',
 };
 
-export const EXAMPLES = {
-  1: {
+export const EXAMPLES = [
+  {
     code: `function foo(b) {
   const a = 10;
   return a + b + 11;
@@ -111,7 +111,7 @@ console.log(bar(7));`,
       },
     ],
   },
-  2: {
+  {
     code: `function g() {
   console.log('bar');
 }
@@ -218,7 +218,7 @@ f();`,
       },
     ],
   },
-  3: {
+  {
     code: `console.log('script start');
 
 setTimeout(() => console.log('setTimeout'), 0);
@@ -337,7 +337,7 @@ console.log('script end');`,
       },
     ],
   },
-  4: {
+  {
     code: `const loop = () => setTimeout(loop, 0);
 
 loop();`,
@@ -419,7 +419,7 @@ loop();`,
       },
     ],
   },
-  5: {
+  {
     code: `const loop = () => Promise.resolve().then(loop);
 
 loop();`,
@@ -505,7 +505,7 @@ loop();`,
       },
     ],
   },
-  6: {
+  {
     code: `let a;
 
 const p = new Promise((resolve) => {
@@ -690,4 +690,4 @@ console.log('A5', a);`,
       },
     ],
   },
-};
+];

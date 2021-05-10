@@ -1,5 +1,5 @@
 <template>
-  <div :class="arrowClass" />
+  <div :class="arrowClass" :title="title" />
 </template>
 
 <script>
@@ -8,6 +8,10 @@ export default {
     right: {
       type: Boolean,
       default: false,
+    },
+    title: {
+      type: String,
+      default: '',
     },
     disabled: {
       type: Boolean,

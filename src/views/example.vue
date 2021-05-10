@@ -1,43 +1,57 @@
 <template>
-  <div class="row" :key="number">
-    <pre><code ref="code" class="javascript has-highlights">{{ example.code }}</code></pre>
-    <the-engine :steps="steps" :active-step-index="activeStepIndex" />
-  </div>
-  <div
-    class="controls-arrow"
-    @click="prev"
-  ></div>
-  <div
-    class="controls-arrow controls-arrow--right"
-    @click="next"
-  ></div>
-  <div class="row row--justify-center row--align-center">
-    <v-control-arrow
-      :disabled="isFirstStep"
-      @click.prevent="prev"
-    />
-    <v-control-points
-      :count="steps.length"
-      :active-index="activeStepIndex"
-      @point-click="goTo"
-    />
-    <v-control-arrow
-      :disabled="isLastStep"
-      right
-      @click.prevent="next"
-    />
+  <div class="example">
+    <div class="back">
+      <v-control-arrow title="Back" @click.prevent="routerToHome" />
+    </div>
+    <div class="row">
+      <v-code :code="example.code" :lines="currentStep.lines" highlight />
+      <the-engine :steps="steps" :active-step-index="activeStepIndex" />
+    </div>
+    <div
+      class="controls-arrow"
+      @click="prev"
+    ></div>
+    <div
+      class="controls-arrow controls-arrow--right"
+      @click="next"
+    ></div>
+    <div class="row row--justify-center row--align-center">
+      <v-control-arrow
+        :disabled="isFirstStep"
+        title="Prev"
+        @click.prevent="prev"
+      />
+      <v-control-points
+        :count="steps.length"
+        :active-index="activeStepIndex"
+        @point-click="goTo"
+      />
+      <v-control-arrow
+        :disabled="isLastStep"
+        title="Next"
+        right
+        @click.prevent="next"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import { ROUTES } from '@/config';
 import { EXAMPLES } from '@/constants';
 
 import TheEngine from '@/components/engine/the-engine.vue';
+import VCode from '@/components/common/code/v-code.vue';
 import VControlArrow from '@/components/common/controls/v-control-arrow.vue';
 import VControlPoints from '@/components/common/controls/v-control-points.vue';
 
 export default {
-  components: { TheEngine, VControlArrow, VControlPoints },
+  components: {
+    TheEngine,
+    VCode,
+    VControlArrow,
+    VControlPoints,
+  },
   props: {
     number: {
       type: [Number, String],
@@ -73,55 +87,9 @@ export default {
   watch: {
     example() {
       this.activeStepIndex = 0;
-      this.highlightCode();
     },
-
-    currentStep(value) {
-      const { lines } = value;
-
-      if (lines) {
-        this.highlightLines(lines);
-      }
-    },
-  },
-  mounted() {
-    this.highlightCode();
   },
   methods: {
-    highlightCode() {
-      this.$nextTick(() => {
-        window.hljs.highlightElement(this.$refs.code);
-
-        setTimeout(() => this.highlightLines(this.currentStep.lines), 100);
-      });
-    },
-
-    highlightLines(lines) {
-      const linesNumbers = String(lines).split(',')
-        .reduce((acc, pattern) => {
-          const [from, to] = pattern.split('-');
-          const fromNumber = parseInt(from, 10);
-          const toNumber = parseInt(to, 10);
-          const result = to
-            ? Array.from({ length: toNumber - fromNumber + 1 }, (value, index) => index + fromNumber)
-            : [fromNumber];
-
-          acc.push(...result);
-
-          return acc;
-        }, []);
-
-      const elements = this.$refs.code.getElementsByTagName('tr');
-
-      elements.forEach((element, index) => {
-        if (linesNumbers.includes(index + 1)) {
-          element.classList.add('highlight-line');
-        } else {
-          element.classList.remove('highlight-line');
-        }
-      });
-    },
-
     goTo(index) {
       if (index >= 0 && index < this.steps.length && index !== this.activeStepIndex) {
         this.activeStepIndex = index;
@@ -139,11 +107,24 @@ export default {
         this.activeStepIndex -= 1;
       }
     },
+
+    routerToHome() {
+      this.$router.push({ name: ROUTES.home });
+    },
   },
 };
 </script>
+
 <style lang="scss" scoped>
-code {
-  width: 500px;
+.example {
+  padding: 0 50px;
+}
+.back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 </style>
