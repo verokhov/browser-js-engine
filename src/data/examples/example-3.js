@@ -31,8 +31,14 @@ loop();`,
     {
       lines: '3',
       actions: [
+        { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.remove },
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
-        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'loop' },
+        {
+          queue: QUEUES_TYPES.tasks,
+          type: ACTIONS_TYPES.add,
+          content: 'loop',
+          outside: true,
+        },
       ],
     },
     {
@@ -41,13 +47,19 @@ loop();`,
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
         { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
+        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.markInside },
       ],
     },
     {
       lines: '1',
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'loop' },
-        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'loop' },
+        {
+          queue: QUEUES_TYPES.tasks,
+          type: ACTIONS_TYPES.add,
+          content: 'loop',
+          outside: true,
+        },
       ],
     },
     {
@@ -56,13 +68,19 @@ loop();`,
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
         { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
+        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.markInside },
       ],
     },
     {
       lines: '1',
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'loop' },
-        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'loop' },
+        {
+          queue: QUEUES_TYPES.tasks,
+          type: ACTIONS_TYPES.add,
+          content: 'loop',
+          outside: true,
+        },
       ],
     },
     {
@@ -71,13 +89,19 @@ loop();`,
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
         { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
+        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.markInside },
       ],
     },
     {
       lines: '1',
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'loop' },
-        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'loop' },
+        {
+          queue: QUEUES_TYPES.tasks,
+          type: ACTIONS_TYPES.add,
+          content: 'loop',
+          outside: true,
+        },
       ],
     },
   ],

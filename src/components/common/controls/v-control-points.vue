@@ -12,6 +12,9 @@
 
 <script>
 export default {
+  emits: {
+    'point-click': null,
+  },
   props: {
     count: {
       type: Number,
