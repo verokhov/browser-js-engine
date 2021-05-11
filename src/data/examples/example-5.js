@@ -96,7 +96,12 @@ console.log('A5', a);`,
       actions: [
         { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.remove },
         { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'setTimeout1' },
-        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'setTimeout2' },
+        {
+          queue: QUEUES_TYPES.tasks,
+          type: ACTIONS_TYPES.add,
+          content: 'setTimeout2',
+          outside: true,
+        },
       ],
     },
     {
@@ -128,6 +133,7 @@ console.log('A5', a);`,
       pointerPosition: POINTER_POSITIONS.bottom,
       actions: [
         { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
+        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.markInside },
       ],
     },
     {
