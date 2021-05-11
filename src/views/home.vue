@@ -36,7 +36,7 @@ export default {
 .codes-wrapper {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-between;
 
   .code {
     position: relative;
