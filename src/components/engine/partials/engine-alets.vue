@@ -31,7 +31,7 @@ export default {
   pointer-events: none;
 
   .alert {
-    margin: -50px 5px 5px 5px;
+    margin: -30px 5px 5px 5px;
     padding: 20px;
     font-size: 1.2rem;
     border-radius: 5px;

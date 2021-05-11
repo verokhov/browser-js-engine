@@ -13,7 +13,7 @@
 
 <script>
 import { ROUTES } from '@/config';
-import { EXAMPLES } from '@/constants';
+import EXAMPLES from '@/data/examples';
 
 import VCode from '@/components/common/code/v-code.vue';
 

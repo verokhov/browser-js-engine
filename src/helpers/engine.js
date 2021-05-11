@@ -15,6 +15,7 @@
  * @property {EngineStepActionQueue} queue
  * @property {EngineStepActionType} type
  * @property {string} content
+ * @property {boolean} outside
  */
 
 /**
@@ -32,9 +33,11 @@ import { ACTIONS_TYPES, POINTER_POSITIONS } from '@/constants';
  * Create action with uid key and passed content
  *
  * @param {string} content
+ * @param {boolean} outside
+ * @param {string} [key = uid()]
  * @returns {{key: string, content: string}}
  */
-export const createActionByContent = (content) => ({ key: uid(), content });
+export const createAction = ({ content, outside, key = uid() }) => ({ key, content, outside });
 
 /**
  * Get nearest pointer position less then passed step

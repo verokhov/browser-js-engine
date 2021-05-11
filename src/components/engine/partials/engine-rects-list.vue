@@ -2,9 +2,20 @@
   <div :class="wrapperClass">
     <transition-group :name="transition">
       <event-loop-rect-item
-        v-for="item in items"
+        v-for="item in insideItems"
         :key="item.key"
         :color="itemColor"
+      >
+        {{ item.content }}
+      </event-loop-rect-item>
+    </transition-group>
+  </div>
+  <div class="rect-wrapper--outside">
+    <transition-group :name="transition">
+      <event-loop-rect-item
+          v-for="item in outsideItems"
+          :key="item.key"
+          :color="itemColor"
       >
         {{ item.content }}
       </event-loop-rect-item>
@@ -45,6 +56,14 @@ export default {
     },
   },
   computed: {
+    insideItems() {
+      return this.items.filter(({ outside }) => !outside);
+    },
+
+    outsideItems() {
+      return this.items.filter(({ outside }) => outside);
+    },
+
     wrapperClass() {
       return {
         'rect-wrapper': true,
@@ -63,18 +82,16 @@ $minHeight: 52px;
 .rect-wrapper {
   position: relative;
   display: flex;
+  padding: $rectWrapperPadding;
+  margin-bottom: $rectWrapperPadding * 2;
+
+  &--outside {
+    padding: 0 5px;
+  }
 
   &--row {
     min-height: $minHeight;
     width: 840px;
-
-    &:deep(.rect) {
-      margin-left: 0;
-
-      &:first-of-type {
-        margin-left: 4px;
-      }
-    }
   }
 
   &--column {
@@ -82,14 +99,6 @@ $minHeight: 52px;
     flex-direction: column;
     width: 230px;
     min-height: $minHeight;
-
-    &:deep(.rect) {
-      margin-top: 0;
-
-      &:first-of-type {
-        margin-top: 4px;
-      }
-    }
   }
 
   &:before {

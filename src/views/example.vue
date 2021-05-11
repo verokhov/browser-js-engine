@@ -38,7 +38,7 @@
 
 <script>
 import { ROUTES } from '@/config';
-import { EXAMPLES } from '@/constants';
+import EXAMPLES from '@/data/examples';
 
 import TheEngine from '@/components/engine/the-engine.vue';
 import VCode from '@/components/common/code/v-code.vue';

@@ -58,6 +58,8 @@
 </template>
 
 <script>
+import { findLast } from 'lodash';
+
 import {
   ACTIONS_TYPES,
   QUEUES_TYPES,
@@ -66,7 +68,7 @@ import {
 } from '@/constants';
 
 import {
-  createActionByContent,
+  createAction,
   getNearestPointerPositionForStep,
   getSortedActionsByType,
 } from '@/helpers/engine';
@@ -165,16 +167,27 @@ export default {
       }
 
       getSortedActionsByType(actions, ACTIONS_TYPES.remove).forEach((action) => {
-        const { type, queue, content } = action;
+        const { type, queue } = action;
 
         if (type === ACTIONS_TYPES.remove) {
           const method = [QUEUES_TYPES.callstack, QUEUES_TYPES.log].includes(queue) ? 'pop' : 'shift';
           const removedAction = this[queue][method]();
 
-          return this.$removedActions.push({ action: removedAction, forAction: action });
+          this.$removedActions.push({ action: removedAction, forAction: action });
+          return;
         }
 
-        return this[queue].push(createActionByContent(content));
+        if (type === ACTIONS_TYPES.markInside) {
+          const item = this[queue].find(({ outside }) => outside);
+
+          if (item) {
+            item.outside = false;
+          }
+
+          return;
+        }
+
+        this[queue].push(createAction(action));
       });
     },
 
@@ -198,6 +211,16 @@ export default {
 
           if (type === ACTIONS_TYPES.add) {
             this[queue].pop();
+            return;
+          }
+
+          if (type === ACTIONS_TYPES.markInside) {
+            const item = findLast(this[queue], (({ outside }) => !outside));
+
+            if (item) {
+              item.outside = true;
+            }
+
             return;
           }
 
