@@ -78,7 +78,7 @@ export default {
 }
 
 code.hljs {
-  width: 500px;
+  width: 520px;
   font-size: 1.2em;
   line-height: 1.4em;
   border-radius: 10px;

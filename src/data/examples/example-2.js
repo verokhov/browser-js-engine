@@ -38,7 +38,7 @@ console.log('script end');`,
         {
           queue: QUEUES_TYPES.tasks,
           type: ACTIONS_TYPES.add,
-          content: 'setTimeout callback',
+          content: 'setTimeout',
           outside: true,
         },
         { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.remove },

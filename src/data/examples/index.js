@@ -4,6 +4,7 @@ import Example2 from './example-2';
 import Example3 from './example-3';
 import Example4 from './example-4';
 import Example5 from './example-5';
+import Example6 from './example-6';
 
 export default [
   Example0,
@@ -12,4 +13,5 @@ export default [
   Example3,
   Example4,
   Example5,
+  Example6,
 ];

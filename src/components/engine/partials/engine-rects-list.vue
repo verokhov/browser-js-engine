@@ -85,9 +85,11 @@ $minHeight: 52px;
   position: relative;
   display: flex;
   padding: $rectWrapperPadding;
-  margin-bottom: $rectWrapperPadding * 2;
+  margin-bottom: $rectWrapperPadding;
 
   &--outside {
+    display: flex;
+    flex-direction: column;
     padding: 0 5px;
   }
 

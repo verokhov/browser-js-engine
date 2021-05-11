@@ -50,7 +50,12 @@ f();`,
       actions: [
         { queue: QUEUES_TYPES.alerts, type: ACTIONS_TYPES.remove },
         { queue: QUEUES_TYPES.log, type: ACTIONS_TYPES.add, content: 'baz' },
-        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.add, content: 'g' },
+        {
+          queue: QUEUES_TYPES.tasks,
+          type: ACTIONS_TYPES.add,
+          content: 'g',
+          outside: true,
+        },
       ],
     },
     {
@@ -83,6 +88,7 @@ f();`,
       actions: [
         { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.remove },
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
+        { queue: QUEUES_TYPES.tasks, type: ACTIONS_TYPES.markInside },
       ],
     },
     {

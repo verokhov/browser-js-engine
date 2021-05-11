@@ -23,7 +23,7 @@ export const POINTER_POSITIONS_TO_DEGREES = {
 export const QUEUES_TYPES = {
   tasks: 'tasks',
   microtasks: 'microtasks',
-  renderTasks: 'rendertasks',
+  renderTasks: 'renderTasks',
   callstack: 'callstack',
   log: 'log',
   alerts: 'alerts',
