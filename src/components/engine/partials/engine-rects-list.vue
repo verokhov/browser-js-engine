@@ -1,25 +1,27 @@
 <template>
-  <div :class="wrapperClass">
-    <transition-group :name="transition">
-      <event-loop-rect-item
-        v-for="item in insideItems"
-        :key="item.key"
-        :color="itemColor"
-      >
-        {{ item.content }}
-      </event-loop-rect-item>
-    </transition-group>
-  </div>
-  <div class="rect-wrapper--outside">
-    <transition-group :name="transition">
-      <event-loop-rect-item
-          v-for="item in outsideItems"
-          :key="item.key"
-          :color="itemColor"
-      >
-        {{ item.content }}
-      </event-loop-rect-item>
-    </transition-group>
+  <div>
+    <div :class="wrapperClass">
+      <transition-group :name="transition">
+        <event-loop-rect-item
+            v-for="item in insideItems"
+            :key="item.key"
+            :color="itemColor"
+        >
+          {{ item.content }}
+        </event-loop-rect-item>
+      </transition-group>
+    </div>
+    <div class="rect-wrapper--outside">
+      <transition-group :name="transition">
+        <event-loop-rect-item
+            v-for="item in outsideItems"
+            :key="item.key"
+            :color="itemColor"
+        >
+          {{ item.content }}
+        </event-loop-rect-item>
+      </transition-group>
+    </div>
   </div>
 </template>
 
