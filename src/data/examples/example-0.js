@@ -30,12 +30,24 @@ console.log(bar(7));`,
     },
     {
       lines: '6-9',
+    },
+    {
+      lines: '7',
+    },
+    {
+      lines: '8',
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'foo(7 * 3)' },
       ],
     },
     {
       lines: '1-4',
+    },
+    {
+      lines: '2',
+    },
+    {
+      lines: '3',
     },
     {
       lines: '8',
