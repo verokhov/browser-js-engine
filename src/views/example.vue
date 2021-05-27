@@ -89,7 +89,21 @@ export default {
       this.activeStepIndex = 0;
     },
   },
+  mounted() {
+    document.addEventListener('keyup', this.keyUpHandler);
+  },
+  beforeUnmount() {
+    document.removeEventListener('keyup', this.keyUpHandler);
+  },
   methods: {
+    keyUpHandler({ code }) {
+      if (code === 'ArrowRight') {
+        this.next();
+      } else if (code === 'ArrowLeft') {
+        this.prev();
+      }
+    },
+
     goTo(index) {
       if (index >= 0 && index < this.steps.length && index !== this.activeStepIndex) {
         this.activeStepIndex = index;

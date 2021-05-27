@@ -36,13 +36,13 @@ window.requestAnimationFrame(() => {
     {
       lines: '1-2',
       actions: [
-        { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.add, content: 'Promise 1' },
+        { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.add, content: 'Promise then 1' },
       ],
     },
     {
       lines: '4-5',
       actions: [
-        { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.add, content: 'Promise 2' },
+        { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.add, content: 'Promise then 2' },
       ],
     },
     {
@@ -82,7 +82,7 @@ window.requestAnimationFrame(() => {
     {
       lines: '2',
       actions: [
-        { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Promise 1 callback' },
+        { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Promise then 1 callback' },
       ],
     },
     {
@@ -101,7 +101,7 @@ window.requestAnimationFrame(() => {
     {
       lines: '5',
       actions: [
-        { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Promise 2 callback' },
+        { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Promise then 2 callback' },
       ],
     },
     {
@@ -128,7 +128,7 @@ window.requestAnimationFrame(() => {
     {
       lines: '10-11',
       actions: [
-        { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.add, content: 'Promise 3' },
+        { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.add, content: 'Promise then 3' },
       ],
     },
     {
@@ -150,14 +150,14 @@ window.requestAnimationFrame(() => {
     {
       lines: '11',
       actions: [
-        { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Promise 3 callback' },
+        { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Promise then 3 callback' },
       ],
     },
     {
       lines: '11',
       actions: [
         { queue: QUEUES_TYPES.log, type: ACTIONS_TYPES.add, content: 'Promise 3' },
-        { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.add, content: 'Promise 4' },
+        { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.add, content: 'Promise then 4' },
       ],
     },
     {
@@ -170,7 +170,7 @@ window.requestAnimationFrame(() => {
     {
       lines: '12',
       actions: [
-        { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Promise 4 callback' },
+        { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Promise then 4 callback' },
       ],
     },
     {
@@ -202,7 +202,7 @@ window.requestAnimationFrame(() => {
     {
       lines: '18-19',
       actions: [
-        { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.add, content: 'Promise 5' },
+        { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.add, content: 'Promise then 5' },
       ],
     },
     {
@@ -224,7 +224,7 @@ window.requestAnimationFrame(() => {
     {
       lines: '19',
       actions: [
-        { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Promise 5 callback' },
+        { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'Promise then 5 callback' },
       ],
     },
     {

@@ -155,14 +155,14 @@ console.log('A5', a);`,
       ],
     },
     {
-      lines: '17',
+      lines: '12-15',
       pointerPosition: POINTER_POSITIONS.left,
       actions: [
         { queue: QUEUES_TYPES.microtasks, type: ACTIONS_TYPES.remove },
       ],
     },
     {
-      lines: '12',
+      lines: '12-15',
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.add, content: 'setTimeout2 callback' },
       ],

@@ -151,7 +151,7 @@ console.log('end');`,
       ],
     },
     {
-      lines: '19',
+      lines: '1-7',
       pointerPosition: POINTER_POSITIONS.right,
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
@@ -226,7 +226,7 @@ console.log('end');`,
       ],
     },
     {
-      lines: '15',
+      lines: '24',
       pointerPosition: POINTER_POSITIONS.left,
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },
@@ -248,7 +248,7 @@ console.log('end');`,
       ],
     },
     {
-      lines: '24',
+      lines: '4-6',
       pointerPosition: POINTER_POSITIONS.right,
       actions: [
         { queue: QUEUES_TYPES.callstack, type: ACTIONS_TYPES.remove },

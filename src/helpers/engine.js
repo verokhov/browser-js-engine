@@ -22,6 +22,7 @@
  * @typedef {Object} EngineStep
  * @property {string | number} lines
  * @property {EngineStepPointerPosition} [pointerPosition]
+ * @property {boolean} [pointerPositionReverse]
  * @property {EngineStepAction[]} [actions]
  */
 
