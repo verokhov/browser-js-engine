@@ -160,10 +160,10 @@ export default {
      * @param {number} index
      */
     nextProcess(index) {
-      const { pointerPosition, actions = [] } = this.steps[index];
+      const { pointerPosition, pointerPositionReverse = false, actions = [] } = this.steps[index];
 
       if (pointerPosition) {
-        this.pointerGoToPosition(pointerPosition);
+        this.pointerGoToPosition(pointerPosition, pointerPositionReverse);
       }
 
       getSortedActionsByType(actions, ACTIONS_TYPES.remove).forEach((action) => {
@@ -197,12 +197,19 @@ export default {
      * @param {number} index
      */
     prevProcess(index) {
-      const { pointerPosition: prevPointerPosition, actions: prevActions = [] } = this.steps[index + 1];
+      const {
+        pointerPosition: prevPointerPosition,
+        pointerPositionReverse: prevPointerPositionReverse = false,
+        actions: prevActions = [],
+      } = this.steps[index + 1];
 
       if (prevPointerPosition) {
         const pointerPosition = getNearestPointerPositionForStep(this.steps, index);
 
-        this.pointerGoToPosition(pointerPosition, pointerPosition !== POINTER_POSITIONS.infinity);
+        this.pointerGoToPosition(
+          pointerPosition,
+          !prevPointerPositionReverse && pointerPosition !== POINTER_POSITIONS.infinity,
+        );
       }
 
       getSortedActionsByType(prevActions, ACTIONS_TYPES.add)
