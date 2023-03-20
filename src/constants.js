@@ -40,3 +40,5 @@ export const ACTIONS_TYPES = {
   remove: 'remove',
   markInside: 'markInside',
 };
+
+export const GITHUB_LINK = 'https://github.com/verokhov/browser-js-engine';

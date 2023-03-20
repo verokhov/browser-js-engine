@@ -59,7 +59,7 @@ export default {
 
       const elements = this.$refs.code.getElementsByTagName('tr');
 
-      elements.forEach((element, index) => {
+      Object.values(elements).forEach((element, index) => {
         if (linesNumbers.includes(index + 1)) {
           element.classList.add('highlight-line');
         } else {
